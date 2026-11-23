@@ -1,0 +1,15 @@
+[workspace]
+resolver = "3"
+members = ["crates/kazari-core", "crates/kazari-app"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+authors = ["Santiago Otalvaro"]
+repository = "https://github.com/Santiago-0t/kazari"
+
+[workspace.dependencies]
+serde_json = { version = "1", features = ["preserve_order"] }
+json_comments = "0.2"
+thiserror = "2"
