@@ -1,0 +1,12 @@
+[package]
+name = "kazari"
+description = "Desktop app to rice Windows quickly"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+kazari-core = { path = "../kazari-core" }
+iced = "0.14"
