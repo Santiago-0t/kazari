@@ -22,6 +22,16 @@ kazari **edita** los archivos existentes en lugar de reemplazarlos: conserva tus
 
 Alacritty no tiene efecto acrílico, así que en esa terminal se aplica solo transparencia.
 
+## Descarga
+
+Descarga el `.zip` de la última versión desde [Releases](https://github.com/Santiago-0t/kazari/releases/latest), descomprímelo y ejecuta `kazari.exe`. No requiere instalación. El ejecutable no está firmado, así que Windows SmartScreen puede mostrar un aviso la primera vez: pulsa **Más información → Ejecutar de todas formas**.
+
+Para comprobar que el `.zip` se compiló en este repositorio y no fue modificado, usa la [CLI de GitHub](https://cli.github.com/):
+
+```powershell
+gh attestation verify kazari-v0.1.0-windows-x86_64.zip --repo Santiago-0t/kazari
+```
+
 ## Uso
 
 1. Instala la tipografía Nerd Font que vayas a elegir.
@@ -53,7 +63,7 @@ cargo test -p kazari-core   # pruebas del núcleo
 cargo run -p kazari         # abre la app
 ```
 
-La integración continua prueba el núcleo en Linux y compila `kazari.exe` en Windows.
+La integración continua prueba el núcleo en Linux y compila `kazari.exe` en Windows. Al subir un tag `v*` (por ejemplo `git tag v0.1.0 && git push origin v0.1.0`), el workflow `release.yml` compila el ejecutable y publica el `.zip` con su suma SHA-256 en GitHub Releases.
 
 ## Hoja de ruta
 
@@ -64,6 +74,17 @@ La integración continua prueba el núcleo en Linux y compila `kazari.exe` en Wi
 - [ ] Guardar y compartir presets propios.
 - [ ] Restaurar las copias `*.kazari.bak` desde la app.
 
+## Créditos
+
+Las paletas incluidas son obra de sus autores, todas con licencia MIT:
+
+- Zenwritten, de [zenbones.nvim](https://github.com/zenbones-theme/zenbones.nvim)
+- [Catppuccin](https://github.com/catppuccin/catppuccin) Mocha
+- [Gruvbox](https://github.com/morhetz/gruvbox) Dark
+- [Nord](https://github.com/nordtheme/nord)
+- [Tokyo Night](https://github.com/tokyo-night/tokyo-night-vscode-theme)
+- [Rosé Pine](https://github.com/rose-pine/rose-pine-theme)
+
 ## Licencia
 
-MIT
+MIT. Las licencias de las dependencias incluidas en el ejecutable van en `THIRD_PARTY_LICENSES.txt` dentro de cada release.

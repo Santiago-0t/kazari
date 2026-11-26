@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  windows:
+    name: Build and publish (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+      - run: cargo test -p kazari-core
+      - run: cargo build --release --locked -p kazari
+
+      - name: Generate third-party license notices
+        run: |
+          cargo install cargo-about --version 0.9.3 --locked --features cli
+          cargo about generate --locked --fail about.hbs -o THIRD_PARTY_LICENSES.txt
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "kazari-${{ github.ref_name }}-windows-x86_64"
+          New-Item -ItemType Directory -Path $name | Out-Null
+          Copy-Item target/release/kazari.exe, LICENSE, THIRD_PARTY_LICENSES.txt, README.md -Destination $name
+          Compress-Archive -Path $name -DestinationPath "$name.zip"
+          (Get-FileHash "$name.zip" -Algorithm SHA256).Hash.ToLower() + "  $name.zip" | Out-File -Encoding ascii "$name.zip.sha256"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4
+        with:
+          subject-path: |
+            target/release/kazari.exe
+            kazari-${{ github.ref_name }}-windows-x86_64.zip
+
+      - name: Publish release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $name = "kazari-${{ github.ref_name }}-windows-x86_64"
+          gh release create "${{ github.ref_name }}" "$name.zip" "$name.zip.sha256" `
+            --title "kazari ${{ github.ref_name }}" --generate-notes

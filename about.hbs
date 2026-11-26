@@ -1,0 +1,21 @@
+THIRD-PARTY SOFTWARE NOTICES
+
+kazari is distributed with the following third-party crates. Their license
+texts are reproduced below as required by their terms.
+
+{{#each overview}}
+- {{{name}}} ({{count}} crates)
+{{/each}}
+
+{{#each licenses}}
+================================================================================
+{{{name}}}
+
+Used by:
+{{#each used_by}}
+  - {{{crate.name}}} {{crate.version}}{{#if crate.repository}} ({{{crate.repository}}}){{/if}}
+{{/each}}
+
+{{{text}}}
+
+{{/each}}
